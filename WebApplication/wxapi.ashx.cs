@@ -46,11 +46,11 @@ namespace WebApplication
         /// <param name="postStr">POST方式提交的数据</param>
         private void Execute(string postStr)
         {
-            WeixinApiDispatch dispatch = new WeixinApiDispatch();
-            string responseContent = dispatch.Execute(postStr);
+            //WeixinApiDispatch dispatch = new WeixinApiDispatch();
+            //string responseContent = dispatch.Execute(postStr);
 
-            HttpContext.Current.Response.ContentEncoding = Encoding.UTF8;
-            HttpContext.Current.Response.Write(responseContent);
+            //HttpContext.Current.Response.ContentEncoding = Encoding.UTF8;
+            //HttpContext.Current.Response.Write(responseContent);
         }
 
         /// <summary>

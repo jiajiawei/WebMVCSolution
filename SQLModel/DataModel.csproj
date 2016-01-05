@@ -45,6 +45,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Send\ArticleEntity.cs" />
+    <Compile Include="Send\BaseMessage.cs" />
+    <Compile Include="Send\MyXmlHelper.cs" />
+    <Compile Include="Send\ResponseNews.cs" />
+    <Compile Include="Send\ResponseText.cs" />
     <Compile Include="Send\SImg.cs" />
     <Compile Include="Send\Smusic.cs" />
     <Compile Include="Send\SNews.cs" />

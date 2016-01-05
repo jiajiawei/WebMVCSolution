@@ -12,9 +12,30 @@ namespace DAL
 {
     public class WeiXin:IWeiXin
     {
-       
 
-       
+        /// <summary>
+        /// 订阅或者显示公司信息
+        /// </summary>
+        /// <param name="info"></param>
+        /// <returns></returns>
+        private string ShowCompanyInfo(BaseMessage info)
+        {
+            string result = "";
+            //使用在微信平台上的图文信息(单图文信息)
+            ResponseNews response = new ResponseNews(info);
+            ArticleEntity entity = new ArticleEntity();
+            entity.Title = "广州爱奇迪软件科技有限公司";
+            entity.Description = "欢迎关注广州爱奇迪软件--专业的单位信息化软件和软件开发框架提供商，我们立志于为客户提供最好的软件及服务。\r\n";
+            entity.Description += "我们是一家极富创新性的软件科技公司，从事研究、开发并销售最可靠的、安全易用的技术产品及优质专业的服务，帮助全球客户和合作伙伴取得成功。\r\n......（此处省略1000字，哈哈）";
+            entity.PicUrl = "http://www.iqidi.com/WeixinImage/company.png";
+            entity.Url = "http://www.iqidi.com";
+
+            response.Articles.Add(entity);
+            result = response.ToXml();
+
+            return result;
+        }
+
 
         public string SendText(SText model)
         {
