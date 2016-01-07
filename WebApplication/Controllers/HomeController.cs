@@ -58,8 +58,6 @@ namespace WebApplication.Controllers
         {
             VqiRequest.Context = HttpContext;
 
-
-
             return View();
         }
 

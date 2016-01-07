@@ -3,20 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace DataModel.Send
+namespace DataModel.Response
 {
     /// <summary>
-    /// 回复文本消息
+    /// 回复图片消息
     /// </summary>
     [System.Xml.Serialization.XmlRoot(ElementName = "xml")]
-    public class ResponseText : BaseMessage
+    public class ResponseImage : BaseMessage
     {
-        public ResponseText()
+        public ResponseImage()
         {
-            this.MsgType = ResponseMsgType.Text.ToString().ToLower();
+            this.MsgType = ResponseMsgType.Image.ToString().ToLower();
         }
 
-        public ResponseText(BaseMessage info) : this()
+        public ResponseImage(BaseMessage info) : this()
         {
             this.FromUserName = info.ToUserName;
             this.ToUserName = info.FromUserName;

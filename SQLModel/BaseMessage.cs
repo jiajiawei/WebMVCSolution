@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Xml.Serialization;
 
-namespace DataModel.Send
+namespace DataModel
 {
     /// <summary>
     /// 基础消息内容
@@ -50,7 +50,12 @@ namespace DataModel.Send
 
     public enum ResponseMsgType
     {
+        Image,
+        Music,
+        News,
         Text,
-        News
+        Video,
+        Voice,
+        transfer_customer_service
     }
 }

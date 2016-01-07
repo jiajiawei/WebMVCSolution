@@ -31,6 +31,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.8.0.1\lib\net40\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.Entity" />
@@ -44,12 +48,41 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BaseJsonResult.cs" />
+    <Compile Include="JsonResult\GroupIdJsonResult.cs" />
+    <Compile Include="JsonResult\CommonResult.cs" />
+    <Compile Include="JsonResult\CreateGroupResult.cs" />
+    <Compile Include="JsonResult\ErrorJsonResult.cs" />
+    <Compile Include="JsonResult\GroupJson.cs" />
+    <Compile Include="JsonResult\UserJson.cs" />
+    <Compile Include="JsonResult\UserListJsonResult.cs" />
+    <Compile Include="Menu\MenuInfo.cs" />
+    <Compile Include="Menu\MenuJson.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Send\ArticleEntity.cs" />
-    <Compile Include="Send\BaseMessage.cs" />
-    <Compile Include="Send\MyXmlHelper.cs" />
-    <Compile Include="Send\ResponseNews.cs" />
-    <Compile Include="Send\ResponseText.cs" />
+    <Compile Include="MyXmlHelper.cs" />
+    <Compile Include="Request\BaseEvent.cs" />
+    <Compile Include="Request\RequestEvent\RequestEventClick.cs" />
+    <Compile Include="Request\RequestEvent\RequestEventLocation.cs" />
+    <Compile Include="Request\RequestEvent\RequestEventScan.cs" />
+    <Compile Include="Request\RequestEvent\RequestEventSubscribe.cs" />
+    <Compile Include="Request\RequestEvent\RequestEventUnSubscribe.cs" />
+    <Compile Include="Request\RequestEvent\RequestEventView.cs" />
+    <Compile Include="Request\RequestImage.cs" />
+    <Compile Include="Request\RequestLink.cs" />
+    <Compile Include="Request\RequestLocation.cs" />
+    <Compile Include="Request\RequestText.cs" />
+    <Compile Include="Request\RequestVideo.cs" />
+    <Compile Include="Request\RequestVoice.cs" />
+    <Compile Include="Response\ArticleEntity.cs" />
+    <Compile Include="BaseMessage.cs" />
+    <Compile Include="Response\ResponseCustomer.cs" />
+    <Compile Include="Response\ResponseImage.cs" />
+    <Compile Include="Response\ResponseMusic.cs" />
+    <Compile Include="Response\ResponseNews.cs" />
+    <Compile Include="Response\ResponseText.cs" />
+    <Compile Include="Response\ResponseVideo.cs" />
+    <Compile Include="Response\ResponseVoice.cs" />
+    <Compile Include="ReturnCode.cs" />
     <Compile Include="Send\SImg.cs" />
     <Compile Include="Send\Smusic.cs" />
     <Compile Include="Send\SNews.cs" />
@@ -59,6 +92,9 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

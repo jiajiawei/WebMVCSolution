@@ -1,4 +1,9 @@
-﻿using System;
+﻿using BLL;
+using DataModel.JsonResult;
+using DataModel.Menu;
+using IBLL;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
@@ -14,6 +19,8 @@ namespace WebApplication
     /// </summary>
     public class wxapi : IHttpHandler
     {
+        string token = string.Empty;
+        string openId = string.Empty;
 
         public void ProcessRequest(HttpContext context)
         {
@@ -53,6 +60,7 @@ namespace WebApplication
             //HttpContext.Current.Response.Write(responseContent);
         }
 
+        #region 验证服务器数据：Auth()
         /// <summary>
         /// 成为开发者的第一步，验证并相应服务器的数据
         /// </summary>
@@ -89,7 +97,7 @@ namespace WebApplication
 
             Array.Sort(ArrTmp);
             string tmpStr = string.Join("", ArrTmp);
-            
+
             tmpStr = FormsAuthentication.HashPasswordForStoringInConfigFile(tmpStr, "SHA1");
             tmpStr = tmpStr.ToLower();
 
@@ -102,6 +110,128 @@ namespace WebApplication
                 return false;
             }
         }
+        #endregion
+
+        private void btnGetUsers_Click(object sender, EventArgs e)
+        {
+            IUserApi userBLL = new UserApi();
+            List<string> userList = userBLL.GetUserList(token);
+            foreach (string openId in userList)
+            {
+                UserJson userInfo = userBLL.GetUserDetail(token, openId);
+                if (userInfo != null)
+                {
+                    string tips = string.Format("{0}:{1}", userInfo.nickname, userInfo.openid);
+                    Console.WriteLine(tips);
+                }
+            }
+        }
+
+        private void btnGetGroupList_Click(object sender, EventArgs e)
+        {
+            IUserApi userBLL = new UserApi();
+            List<GroupJson> list = userBLL.GetGroupList(token);
+            foreach (GroupJson info in list)
+            {
+                string tips = string.Format("{0}:{1}", info.name, info.id);
+                Console.WriteLine(tips);
+            }
+        }
+
+        private void btnFindUserGroup_Click(object sender, EventArgs e)
+        {
+            IUserApi userBLL = new UserApi();
+            int groupId = userBLL.GetUserGroupId(token, openId);
+
+            string tips = string.Format("GroupId:{0}", groupId);
+            Console.WriteLine(tips);
+        }
+
+        private void btnCreateGroup_Click(object sender, EventArgs e)
+        {
+            IUserApi userBLL = new UserApi();
+            GroupJson info = userBLL.CreateGroup(token, "创建测试分组");
+            if (info != null)
+            {
+                string tips = string.Format("GroupId:{0} GroupName:{1}", info.id, info.name);
+                Console.WriteLine(tips);
+
+                string newName = "创建测试修改";
+                CommonResult result = userBLL.UpdateGroupName(token, info.id, newName);
+                Console.WriteLine("修改分组名称：" + (result.Success ? "成功" : "失败:" + result.ErrorMessage));
+            }
+        }
+
+        private void btnUpdateGroup_Click(object sender, EventArgs e)
+        {
+            int groupId = 111;
+            string newName = "创建测试修改";
+
+            IUserApi userBLL = new UserApi();
+            CommonResult result = userBLL.UpdateGroupName(token, groupId, newName);
+            Console.WriteLine("修改分组名称：" + (result.Success ? "成功" : "失败:" + result.ErrorMessage));
+        }
+
+        private void btnMoveToGroup_Click(object sender, EventArgs e)
+        {
+            int togroup_id = 111;//输入分组ID
+
+            if (togroup_id > 0)
+            {
+                IUserApi userBLL = new UserApi();
+                CommonResult result = userBLL.MoveUserToGroup(token, openId, togroup_id);
+
+                Console.WriteLine("移动用户分组名称：" + (result.Success ? "成功" : "失败:" + result.ErrorMessage));
+            }
+        }
+
+        private void btnGetMenuJson_Click(object sender, EventArgs e)
+        {
+            IMenuApi menuBLL = new MenuApi();
+            MenuJson menu = menuBLL.GetMenu(token);
+            if (menu != null)
+            {
+                Console.WriteLine(menu.ToJson());
+            }
+        }
+
+        private void btnCreateMenu_Click(object sender, EventArgs e)
+        {
+            MenuInfo productInfo = new MenuInfo("软件产品", new MenuInfo[] {
+                new MenuInfo("病人资料管理系统", ButtonType.click, "patient"),
+                new MenuInfo("客户关系管理系统", ButtonType.click, "crm"),
+                new MenuInfo("酒店管理系统", ButtonType.click, "hotel"),
+                new MenuInfo("送水管理系统", ButtonType.click, "water")
+            });
+
+            MenuInfo frameworkInfo = new MenuInfo("框架产品", new MenuInfo[] {
+                new MenuInfo("Win开发框架", ButtonType.click, "win"),
+                new MenuInfo("WCF开发框架", ButtonType.click, "wcf"),
+                new MenuInfo("混合式框架", ButtonType.click, "mix"),
+                new MenuInfo("Web开发框架", ButtonType.click, "web"),
+                new MenuInfo("代码生成工具", ButtonType.click, "database2sharp")
+            });
+
+            MenuInfo relatedInfo = new MenuInfo("相关链接", new MenuInfo[] {
+                new MenuInfo("公司介绍", ButtonType.click, "Event_Company"),
+                new MenuInfo("官方网站", ButtonType.view, "http://www.iqidi.com"),
+                new MenuInfo("提点建议", ButtonType.click, "Event_Suggestion"),
+                new MenuInfo("联系客服", ButtonType.click, "Event_Contact"),
+                new MenuInfo("发邮件", ButtonType.view, "http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=S31yfX15fn8LOjplKCQm")
+            });
+
+            MenuJson menuJson = new MenuJson();
+            menuJson.button.AddRange(new MenuInfo[] { productInfo, frameworkInfo, relatedInfo });
+
+            //Console.WriteLine(menuJson.ToJson());
+
+            //if (MessageUtil.ShowYesNoAndWarning("您确认要创建菜单吗") == System.Windows.Forms.DialogResult.Yes)
+            //{
+            //    IMenuApi menuBLL = new MenuApi();
+            //    CommonResult result = menuBLL.CreateMenu(token, menuJson);
+            //    Console.WriteLine("创建菜单：" + (result.Success ? "成功" : "失败:" + result.ErrorMessage));
+            //}
+        }
 
         public bool IsReusable
         {
@@ -109,6 +239,20 @@ namespace WebApplication
             {
                 return false;
             }
+        }
+    }
+
+
+    static partial class Object
+    {
+        /// <summary>
+        /// 把对象为json字符串
+        /// </summary>
+        /// <param name="obj">待序列号对象</param>
+        /// <returns></returns>
+        public static string ToJson(this object obj)
+        {
+            return JsonConvert.SerializeObject(obj, Formatting.Indented);
         }
     }
 }

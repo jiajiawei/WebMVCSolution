@@ -43,12 +43,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IDoWei.cs" />
+    <Compile Include="IMenuApi.cs" />
+    <Compile Include="IUserApi.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\IDAL\IDAL.csproj">
       <Project>{67BB2991-44F5-4201-B278-1A7661B5FDF6}</Project>
       <Name>IDAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SQLModel\DataModel.csproj">
+      <Project>{33f9c048-02fd-40d5-99b1-2b6b6e8d269e}</Project>
+      <Name>DataModel</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -8,6 +8,8 @@ using DataModel;
 using DataModel.Send;
 using System.Data.Entity;
 using System.Linq.Expressions;
+using DataModel.Response;
+
 namespace DAL
 {
     public class WeiXin:IWeiXin
